@@ -117,16 +117,17 @@ public class MazeDataGenerator
             }
         }
 
-        // remove 1 edge at random to create the exit
+        // create exit
+        // exit will always be at cardinal direction regardless of inner wall structure
         if (Random.value > 0.5f)
         {
             int r = Random.value > 0.5f ? 0 : maxR;
-            int c = Random.Range(1, maxC);
+            int c = maxC / 2;
             maze[r, c] = 0;
         }
         else
         {
-            int r = Random.Range(1, maxR);
+            int r = maxR / 2;
             int c = Random.value > 0.5f ? 0 : maxC;
             maze[r, c] = 0;
         }
