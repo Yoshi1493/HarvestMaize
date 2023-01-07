@@ -990,7 +990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afaefdef31b2ae744bfd069502b6893a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mazeDimensions: {x: 11, y: 11}
+  mazeDimensions: {x: 25, y: 25}
   wallPrefab: {fileID: 1181901967901595681, guid: 19a5a892cf39ce449936b3bdceca9b23, type: 3}
   wallParent: {fileID: 2003802662}
 --- !u!1001 &841055498

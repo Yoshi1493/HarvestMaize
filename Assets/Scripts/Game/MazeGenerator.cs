@@ -1,9 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MazeGenerator : MonoBehaviour
 {
     [SerializeField] Vector2Int mazeDimensions;
-    const int minSize = 3;
+    const int minSize = 5;
 
     [SerializeField] GameObject wallPrefab;
     [SerializeField] Transform wallParent;
@@ -62,7 +65,7 @@ public class MazeDataGenerator
 
     public MazeDataGenerator()
     {
-        placementThreshold = 0.1f;
+        placementThreshold = 0f;
     }
 
     public int[,] FromDimensions(int rowCount, int colCount)
@@ -76,23 +79,46 @@ public class MazeDataGenerator
         {
             for (int c = 0; c <= maxC; c++)
             {
+                // ensure all edges and corners and walls
                 if (r == 0 || c == 0 || r == maxR || c == maxC)
                 {
                     maze[r, c] = 1;
                 }
+                // randomly generate maze insides
                 else if (r % 2 == 0 && c % 2 == 0)
                 {
                     if (Random.value > placementThreshold)
                     {
                         maze[r, c] = 1;
 
-                        int a = Random.value < 0.5f ? 0 : (Random.value < 0.5f ? -1 : 1);
+                        int a = Random.value > 0.5f ? 0 : (Random.value > 0.5f ? -1 : 1);
+                        int b = a != 0 ? 0 : (Random.value > 0.5f ? -1 : 1);
 
-                        int b = a != 0 ? 0 : (Random.value < 0.5f ? -1 : 1);
                         maze[r + a, c + b] = 1;
                     }
                 }
             }
+        }
+
+        // create 3x3 opening for starting point
+        for (int r = -1; r <= 1; r++)
+        {
+            for (int c = -1; c <= 1; c++)
+            {
+                maze[maxR / 2 + r, maxC / 2 + c] = 0;
+            }
+        }
+
+        // remove 1 edge at random to create the exit
+        if (Random.value > 0.5f)
+        {
+            int c = Random.Range(0, colCount);
+            maze[0, c] = 0;
+        }
+        else
+        {
+            int r = Random.Range(0, rowCount);
+            maze[r, 0] = 0;
         }
 
         return maze;
