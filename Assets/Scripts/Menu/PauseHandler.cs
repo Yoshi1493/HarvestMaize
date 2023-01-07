@@ -9,6 +9,8 @@ public class PauseHandler : MonoBehaviour
     void Awake()
     {
         GamePauseAction += OnGamePaused;
+        FindObjectOfType<MazeGenerator>().GameStartAction += () => enabled = true;
+        FindObjectOfType<PlayerController>().GameOverAction += OnGameOver;
     }
 
     void Update()
@@ -25,5 +27,10 @@ public class PauseHandler : MonoBehaviour
     void OnGamePaused(bool state)
     {
         isPaused = state;
+    }
+
+    void OnGameOver(bool _)
+    {
+        enabled = false;
     }
 }
