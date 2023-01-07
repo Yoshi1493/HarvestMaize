@@ -32,7 +32,7 @@ public class CharacterController2D : MonoBehaviour
     RaycastOrigins raycastOrigins;
     RaycastHit2D raycastHit;
 
-    const int HorizontalRayCount = 8;
+    const int HorizontalRayCount = 5;
     const int VerticalRayCount = 5;
     float horizontalRayDistance;                // vertical distance between horizontal rays
     float verticalRayDistance;                  // horizontal distance between vertical rays
