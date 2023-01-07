@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         controller = GetComponent<CharacterController2D>();
+        FindObjectOfType<PauseHandler>().GamePauseAction += OnGamePaused;
 
         maxFallSpeed = playerData.gravity.y * 0.5f;
     }
@@ -78,5 +79,10 @@ public class PlayerMovement : MonoBehaviour
 
         // update velocity based on controller velocity
         velocity = controller.Velocity;
+    }
+
+    void OnGamePaused(bool state)
+    {
+        enabled = !state;
     }
 }

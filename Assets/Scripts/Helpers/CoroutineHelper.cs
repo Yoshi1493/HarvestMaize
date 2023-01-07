@@ -4,8 +4,7 @@ using UnityEngine;
 
 public static class CoroutineHelper
 {
-    readonly static WaitForEndOfFrame _endOfFrame = new();
-    public static WaitForEndOfFrame EndOfFrame => _endOfFrame;
+    public static WaitForEndOfFrame EndOfFrame { get; }
 
     readonly static Dictionary<float, WaitForSeconds> _waitForSeconds = new();
     public static WaitForSeconds WaitForSeconds(float seconds)
