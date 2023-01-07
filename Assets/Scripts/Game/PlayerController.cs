@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,6 +11,8 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 LastNonzeroDirection { get; private set; }
     public bool lastNonzeroDirectionX;
+
+    public event Action<bool> GameOverAction;
 
     void Awake()
     {
