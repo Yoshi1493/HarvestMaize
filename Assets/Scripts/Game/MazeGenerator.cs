@@ -9,9 +9,9 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] GameObject innerWallPrefab;
     [SerializeField] Transform wallParent;
 
-    public int[,] mazeData { get; private set; }
+    [SerializeField] BoxCollider2D goalTrigger;
 
-    MazeDataGenerator dataGenerator;
+    int[,] mazeData;
 
     void Awake()
     {
@@ -21,8 +21,6 @@ public class MazeGenerator : MonoBehaviour
             {1, 0, 1},
             {1, 1, 1}
         };
-
-        dataGenerator = new();
     }
 
     void Start()
@@ -35,7 +33,7 @@ public class MazeGenerator : MonoBehaviour
         rowCount = Mathf.Max(rowCount, minSize);
         colCount = Mathf.Max(colCount, minSize);
 
-        mazeData = dataGenerator.FromDimensions(rowCount, colCount);
+        mazeData = FromDimensions(rowCount, colCount);
 
         for (int r = 0; r < rowCount; r++)
         {
@@ -63,20 +61,11 @@ public class MazeGenerator : MonoBehaviour
                 }
             }
         }
+
+        goalTrigger.size = new(colCount + 1, rowCount + 1);
     }
 
-}
-
-public class MazeDataGenerator
-{
-    public float placementThreshold;
-
-    public MazeDataGenerator()
-    {
-        placementThreshold = 0f;
-    }
-
-    public int[,] FromDimensions(int rowCount, int colCount)
+    int[,] FromDimensions(int rowCount, int colCount)
     {
         int[,] maze = new int[rowCount, colCount];
 
@@ -95,15 +84,13 @@ public class MazeDataGenerator
                 // randomly generate inner walls
                 else if (r % 2 == 0 && c % 2 == 0)
                 {
-                    if (Random.value > placementThreshold)
-                    {
-                        maze[r, c] = 1;
+                    maze[r, c] = 1;
 
-                        int a = Random.value > 0.5f ? 0 : (Random.value > 0.5f ? -1 : 1);
-                        int b = a != 0 ? 0 : (Random.value > 0.5f ? -1 : 1);
+                    int a = Random.value > 0.5f ? 0 : (Random.value > 0.5f ? -1 : 1);
+                    int b = a != 0 ? 0 : (Random.value > 0.5f ? -1 : 1);
 
-                        maze[r + a, c + b] = 1;
-                    }
+                    maze[r + a, c + b] = 1;
+
                 }
             }
         }

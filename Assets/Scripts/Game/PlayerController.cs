@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
     CharacterController2D controller;
     SpriteRenderer spriteRenderer;
 
-    const float MoveSpeed = 5f;
+    public const float MoveSpeed = 5f;
     Vector2 moveDirection;
 
     public Vector2 LastNonzeroDirection { get; private set; }
@@ -59,5 +59,11 @@ public class PlayerController : MonoBehaviour
     void OnGamePaused(bool state)
     {
         enabled = !state;
+    }
+
+    public void OnGameOver(bool playerWon)
+    {
+        GameOverAction?.Invoke(playerWon);
+        enabled = false;
     }
 }
