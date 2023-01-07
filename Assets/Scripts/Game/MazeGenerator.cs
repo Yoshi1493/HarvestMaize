@@ -43,7 +43,7 @@ public class MazeGenerator : MonoBehaviour
             {
                 if (mazeData[r, c] != 0)
                 {
-                    GameObject newWall = new();
+                    GameObject newWall = null;
 
                     if (mazeData[r, c] == 1)
                     {
