@@ -2,30 +2,29 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    new Transform transform;
+    CharacterController2D controller;
 
     const float MoveSpeed = 5f;
-    Vector2 velocity;
+    Vector2 moveDirection;
 
     void Awake()
     {
-        transform = GetComponent<Transform>();
+        controller = GetComponent<CharacterController2D>();
+
         FindObjectOfType<PauseHandler>().GamePauseAction += OnGamePaused;
     }
 
     void Update()
     {
-        GetMovementInput();
+        Move();
     }
 
-    void GetMovementInput()
+    void Move()
     {
-        float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
+        moveDirection.x = Input.GetAxisRaw("Horizontal");
+        moveDirection.y = Input.GetAxisRaw("Vertical");
 
-        velocity = new(x, y);
-
-        transform.Translate(Time.deltaTime * MoveSpeed * velocity.normalized, Space.World);
+        controller.Move(Time.deltaTime * MoveSpeed * moveDirection.normalized);
     }
 
     void OnGamePaused(bool state)
