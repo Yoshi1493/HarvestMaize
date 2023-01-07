@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using static CoroutineHelper;
 
-public class Flashlight : MonoBehaviour
+public class FlashlightEffect : MonoBehaviour
 {
     [SerializeField] VolumeProfile volumeProfile;
     Vignette vignette;
