@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     Vector2 moveDirection;
 
     public Vector2 LastNonzeroDirection { get; private set; }
-    public bool lastNonzeroDirectionX;
+    bool lastNonzeroDirectionX;
 
     public event Action<bool> GameOverAction;
 
@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        FindObjectOfType<MazeGenerator>().GameStartAction += () => enabled = true;
         FindObjectOfType<PauseHandler>().GamePauseAction += OnGamePaused;
     }
 

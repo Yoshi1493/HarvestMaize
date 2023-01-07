@@ -1,15 +1,22 @@
+using System.Collections;
 using UnityEngine;
+using static CoroutineHelper;
 
 public class MazeGenerator : MonoBehaviour
 {
     [SerializeField] Vector2Int mazeDimensions;
     const int minSize = 5;
 
+    [SerializeField] Transform wallParent;
     [SerializeField] GameObject outerWallPrefab;
     [SerializeField] GameObject innerWallPrefab;
-    [SerializeField] Transform wallParent;
+    [SerializeField] GameObject bottomWallPrefab;
+
+    [Space]
 
     [SerializeField] BoxCollider2D goalTrigger;
+
+    public event System.Action GameStartAction;
 
     int[,] mazeData;
 
@@ -23,25 +30,32 @@ public class MazeGenerator : MonoBehaviour
         };
     }
 
-    void Start()
+    IEnumerator Start()
     {
-        GenerateNewMaze(mazeDimensions.x, mazeDimensions.y);
+        yield return GenerateNewMaze(mazeDimensions.x, mazeDimensions.y);
+
+        GameStartAction?.Invoke();
     }
 
-    public void GenerateNewMaze(int rowCount, int colCount)
+    IEnumerator GenerateNewMaze(int rowCount, int colCount)
     {
         rowCount = Mathf.Max(rowCount, minSize);
         colCount = Mathf.Max(colCount, minSize);
 
         mazeData = FromDimensions(rowCount, colCount);
 
+        // construct maze
         for (int r = 0; r < rowCount; r++)
         {
             for (int c = 0; c < colCount; c++)
             {
+                GameObject newWall = null;
+
+                float x = c - ((colCount - 1) / 2f);
+                float y = r - ((rowCount - 1) / 2f);
+
                 if (mazeData[r, c] != 0)
                 {
-                    GameObject newWall = null;
 
                     if (mazeData[r, c] == 1)
                     {
@@ -52,16 +66,19 @@ public class MazeGenerator : MonoBehaviour
                         newWall = Instantiate(outerWallPrefab, wallParent);
                     }
 
-                    newWall.name = $"Wall {(r, c)}";                            // debug
+                    newWall.transform.position = new(x, y);
+                    yield return EndOfFrame;
+                }
 
-                    float x = c - ((colCount - 1) / 2f);
-                    float y = r - ((rowCount - 1) / 2f);
-
+                if (mazeData[r, c] != 0 && (r == 0 || mazeData[Mathf.Max(r - 1, 0), c] == 0))
+                {
+                    newWall = Instantiate(bottomWallPrefab, wallParent);
                     newWall.transform.position = new(x, y);
                 }
             }
         }
 
+        // adjust goal trigger based on maze dimensions
         goalTrigger.size = new(colCount + 1, rowCount + 1);
     }
 

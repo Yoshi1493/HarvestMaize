@@ -14,6 +14,7 @@ public class PlayerHarvester : MonoBehaviour
     void Awake()
     {
         player = GetComponent<PlayerController>();
+        FindObjectOfType<MazeGenerator>().GameStartAction += () => enabled = true;
     }
 
     void Update()

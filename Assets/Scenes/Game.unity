@@ -371,9 +371,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 758855595
+  m_SortingLayer: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 7896dae5f6ddebf4bb9d91ed030b6bbe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -398,7 +398,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.16666667}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -409,7 +409,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6666667, y: 0.6666667}
+  m_Size: {x: 0.6666667, y: 0.33333334}
   m_EdgeRadius: 0
 --- !u!50 &193804863
 Rigidbody2D:
@@ -439,12 +439,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193804857}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e3fe2661e2f4e34a972def49bd5557a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastNonzeroDirectionX: 0
 --- !u!114 &193804865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,7 +469,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193804857}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8828de4166418a145a46db761ca379f0, type: 3}
   m_Name: 
@@ -1349,7 +1348,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 843048272}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07d4c565816f39e48a626fb2aeed27c4, type: 3}
   m_Name: 
@@ -2744,6 +2743,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1913410343}
   - component: {fileID: 1913410344}
+  - component: {fileID: 1913410345}
   m_Layer: 0
   m_Name: Light 2D
   m_TagString: Untagged
@@ -2781,12 +2781,12 @@ MonoBehaviour:
   m_ComponentVersion: 1
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.5
+  m_FalloffIntensity: 1
   m_Color: {r: 1, g: 0.9490196, b: 0.8, a: 1}
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000ef5c0bee
+  m_ApplyToSortingLayers: ab373b2d
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -2844,6 +2844,18 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &1913410345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1913410342}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfccd06fddc73d64f92274e3ef33d200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1999343288
 GameObject:
   m_ObjectHideFlags: 0
@@ -3040,9 +3052,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mazeDimensions: {x: 25, y: 25}
+  wallParent: {fileID: 2003802662}
   outerWallPrefab: {fileID: 1181901967901595681, guid: 0de8940a5eccd9747ab915af2dd8d5b6, type: 3}
   innerWallPrefab: {fileID: 1181901967901595681, guid: 19a5a892cf39ce449936b3bdceca9b23, type: 3}
-  wallParent: {fileID: 2003802662}
+  bottomWallPrefab: {fileID: 1181901967901595681, guid: 4f8be1e27be4ee344912b8c110b78032, type: 3}
   goalTrigger: {fileID: 1767115221}
 --- !u!114 &7263389854805367336
 MonoBehaviour:
