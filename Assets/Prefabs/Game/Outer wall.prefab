@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1181901967901595683}
   - component: {fileID: 7776331220404570209}
   m_Layer: 7
-  m_Name: Platform
+  m_Name: Outer wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 15851d032f7d4e34787aa9da784f0233, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2

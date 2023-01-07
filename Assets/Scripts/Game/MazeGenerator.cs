@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class MazeGenerator : MonoBehaviour
@@ -8,7 +5,8 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] Vector2Int mazeDimensions;
     const int minSize = 5;
 
-    [SerializeField] GameObject wallPrefab;
+    [SerializeField] GameObject outerWallPrefab;
+    [SerializeField] GameObject innerWallPrefab;
     [SerializeField] Transform wallParent;
 
     public int[,] mazeData { get; private set; }
@@ -43,9 +41,19 @@ public class MazeGenerator : MonoBehaviour
         {
             for (int c = 0; c < colCount; c++)
             {
-                if (mazeData[r, c] == 1)
+                if (mazeData[r, c] != 0)
                 {
-                    GameObject newWall = Instantiate(wallPrefab, wallParent);
+                    GameObject newWall = new();
+
+                    if (mazeData[r, c] == 1)
+                    {
+                        newWall = Instantiate(innerWallPrefab, wallParent);
+                    }
+                    if (mazeData[r, c] == 2)
+                    {
+                        newWall = Instantiate(outerWallPrefab, wallParent);
+                    }
+
                     newWall.name = $"Wall {(r, c)}";                            // debug
 
                     float x = c - ((colCount - 1) / 2f);
@@ -79,12 +87,12 @@ public class MazeDataGenerator
         {
             for (int c = 0; c <= maxC; c++)
             {
-                // ensure all edges and corners and walls
+                // ensure all edges and corners and outer walls
                 if (r == 0 || c == 0 || r == maxR || c == maxC)
                 {
-                    maze[r, c] = 1;
+                    maze[r, c] = 2;
                 }
-                // randomly generate maze insides
+                // randomly generate inner walls
                 else if (r % 2 == 0 && c % 2 == 0)
                 {
                     if (Random.value > placementThreshold)
@@ -112,13 +120,15 @@ public class MazeDataGenerator
         // remove 1 edge at random to create the exit
         if (Random.value > 0.5f)
         {
-            int c = Random.Range(0, colCount);
-            maze[0, c] = 0;
+            int r = Random.value > 0.5f ? 0 : maxR;
+            int c = Random.Range(1, maxC);
+            maze[r, c] = 0;
         }
         else
         {
-            int r = Random.Range(0, rowCount);
-            maze[r, 0] = 0;
+            int r = Random.Range(1, maxR);
+            int c = Random.value > 0.5f ? 0 : maxC;
+            maze[r, c] = 0;
         }
 
         return maze;
