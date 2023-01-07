@@ -7,7 +7,9 @@ public class PlayerController : MonoBehaviour
 
     const float MoveSpeed = 5f;
     Vector2 moveDirection;
-    bool lastNonzeroDirection;
+
+    public Vector2 LastNonzeroDirection { get; private set; }
+    public bool lastNonzeroDirectionX;
 
     void Awake()
     {
@@ -27,14 +29,19 @@ public class PlayerController : MonoBehaviour
         moveDirection.x = Input.GetAxisRaw("Horizontal");
         moveDirection.y = Input.GetAxisRaw("Vertical");
 
-        if (moveDirection.x > 0 && lastNonzeroDirection)
+        if (!moveDirection.Equals(Vector2.zero) && !moveDirection.Equals(LastNonzeroDirection))
         {
-            lastNonzeroDirection = false;
+            LastNonzeroDirection = moveDirection;
+        }
+
+        if (moveDirection.x > 0 && lastNonzeroDirectionX)
+        {
+            lastNonzeroDirectionX = false;
             UpdateSprite();
         }
-        else if (moveDirection.x < 0 && !lastNonzeroDirection)
+        else if (moveDirection.x < 0 && !lastNonzeroDirectionX)
         {
-            lastNonzeroDirection = true;
+            lastNonzeroDirectionX = true;
             UpdateSprite();
         }
 
@@ -43,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
     void UpdateSprite()
     {
-        spriteRenderer.flipX = lastNonzeroDirection;
+        spriteRenderer.flipX = lastNonzeroDirectionX;
     }
 
     void OnGamePaused(bool state)
