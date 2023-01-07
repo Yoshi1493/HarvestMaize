@@ -43,8 +43,12 @@ public class MazeGenerator : MonoBehaviour
                 if (mazeData[r, c] == 1)
                 {
                     GameObject newWall = Instantiate(wallPrefab, wallParent);
+                    newWall.name = $"Wall {(r, c)}";                            // debug
 
-                    newWall.transform.position = new(c, r);
+                    float x = c - ((colCount - 1) / 2f);
+                    float y = r - ((rowCount - 1) / 2f);
+
+                    newWall.transform.position = new(x, y);
                 }
             }
         }
@@ -70,13 +74,12 @@ public class MazeDataGenerator
 
         for (int r = 0; r <= maxR; r++)
         {
-            for (int c = 0; c < maxC; c++)
+            for (int c = 0; c <= maxC; c++)
             {
                 if (r == 0 || c == 0 || r == maxR || c == maxC)
                 {
                     maze[r, c] = 1;
                 }
-
                 else if (r % 2 == 0 && c % 2 == 0)
                 {
                     if (Random.value > placementThreshold)
