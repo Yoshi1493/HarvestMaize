@@ -6,6 +6,7 @@ using static CoroutineHelper;
 public class Zombie : MonoBehaviour
 {
     new Transform transform;
+    SpriteRenderer spriteRenderer;
 
     MazeGenerator mazeGenerator;
     (int maxRow, int maxCol) mazeBounds;
@@ -31,6 +32,7 @@ public class Zombie : MonoBehaviour
     void Awake()
     {
         transform = GetComponent<Transform>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         FindObjectOfType<PlayerController>().GameOverAction += OnGameOver;
         mazeGenerator = FindObjectOfType<MazeGenerator>();
@@ -44,6 +46,7 @@ public class Zombie : MonoBehaviour
         {
             moveDirection = GetNextMoveDirection();
             lastNonzeroDirection = moveDirection;
+            UpdateSprite();
         }
         else
         {
@@ -119,6 +122,18 @@ public class Zombie : MonoBehaviour
         moveDirection = Vector2Int.zero;
 
         moveCoroutine = null;
+    }
+
+    void UpdateSprite()
+    {
+        if (moveDirection.x == -1)
+        {
+            spriteRenderer.flipX = true;
+        }
+        if (moveDirection.x == 1)
+        {
+            spriteRenderer.flipX = false;
+        }
     }
 
     void OnGameOver(bool _)
