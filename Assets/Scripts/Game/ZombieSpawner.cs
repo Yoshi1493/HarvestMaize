@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static MazeGeneratorHelper;
 
 public class ZombieSpawner : MonoBehaviour
 {
@@ -7,7 +8,8 @@ public class ZombieSpawner : MonoBehaviour
 
     List<(int row, int col)> openSpaces = new();
     MazeGenerator mazeGenerator;
-    const int ZombieCount = 6;
+
+    [SerializeField] int ZombieCount = 5;
 
     void Awake()
     {
@@ -50,10 +52,12 @@ public class ZombieSpawner : MonoBehaviour
         for (int i = 0; i < ZombieCount; i++)
         {
             int rand = Random.Range(0, openSpaces.Count);
-            (float x, float y) = mazeGenerator.MazeIndexToWorldSpace(rowCount + 1, colCount + 1, openSpaces[rand].row, openSpaces[rand].col);
+            (int row, int col) = (openSpaces[rand].row, openSpaces[rand].col);
+            Vector2 pos = MazeIndexToWorldSpace(rowCount + 1, colCount + 1, row, col);
             
             GameObject newZombie = Instantiate(zombiePrefab, transform);
-            newZombie.transform.position = new(x, y);
+            newZombie.transform.position = pos;
+            newZombie.GetComponent<Zombie>().currentCoordinate = (row, col);
 
             // ensure nothing gets instantiated at the same position more than once
             openSpaces.RemoveAt(rand);

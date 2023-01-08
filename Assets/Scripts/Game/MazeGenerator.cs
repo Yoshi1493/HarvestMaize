@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using static CoroutineHelper;
+using static MazeGeneratorHelper;
 
 public class MazeGenerator : MonoBehaviour
 {
@@ -10,10 +11,6 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] Transform wallParent;
     [SerializeField] GameObject outerWallPrefab;
     [SerializeField] GameObject innerWallPrefab;
-
-    [Space]
-
-    [SerializeField] BoxCollider2D goalTrigger;
 
     public event System.Action GameStartAction;
 
@@ -49,8 +46,8 @@ public class MazeGenerator : MonoBehaviour
             {
                 GameObject newWall = null;
 
-                (float x, float y) = MazeIndexToWorldSpace(rowCount, colCount, r, c);
-                float z = (rowCount - r) * -0.1f;
+                Vector3 pos = MazeIndexToWorldSpace(rowCount, colCount, r, c);
+                pos.z = (rowCount - r) * -0.1f;
 
                 if (MazeData[r, c] != 0)
                 {
@@ -63,26 +60,13 @@ public class MazeGenerator : MonoBehaviour
                         newWall = Instantiate(outerWallPrefab, wallParent);
                     }
 
-                    newWall.transform.position = new(x, y, z);
+                    newWall.transform.position = pos;
                     yield return EndOfFrame;
                 }
             }
         }
 
         yield return EndOfFrame;
-
-        // adjust goal trigger based on maze dimensions
-        goalTrigger.size = new(colCount + 1, rowCount + 1);
-    }
-
-    // convert maze index to world space based on row and column count
-    // maze index [0, 0] = bottom left
-    public (float, float) MazeIndexToWorldSpace(int rowCount, int colCount, int row, int col)
-    {
-        float x = col - ((colCount - 1) / 2f);
-        float y = row - ((rowCount - 1) / 2f);
-
-        return (x, y);
     }
 
     int[,] FromDimensions(int rowCount, int colCount)
@@ -140,5 +124,26 @@ public class MazeGenerator : MonoBehaviour
         }
 
         return maze;
+    }
+}
+
+public static class MazeGeneratorHelper
+{
+    // convert maze index to world space based on row and column count
+    // maze index [0, 0] = bottom left
+    public static Vector3 MazeIndexToWorldSpace(int rowCount, int colCount, int row, int col)
+    {
+        float x = col - ((colCount - 1) / 2f);
+        float y = row - ((rowCount - 1) / 2f);
+
+        return new(x, y);
+    }
+
+    public static (int, int) WorldSpaceToMazeIndex(int rowCount, int colCount, Vector3 v)
+    {
+        int r = ((rowCount - 1) / 2) + (int)v.y;
+        int c = ((colCount - 1) / 2) + (int)v.x;
+
+        return (r, c);
     }
 }

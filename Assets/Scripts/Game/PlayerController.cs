@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
         controller.Move(Time.deltaTime * MoveSpeed * moveDirection.normalized);
     }
 
+
     void UpdateSprite()
     {
         spriteRenderer.flipX = lastNonzeroDirectionX;
