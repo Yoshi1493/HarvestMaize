@@ -7,8 +7,10 @@ public class PlayerController : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     public const float MoveSpeed = 5f;
-    Vector2 moveDirection;
+    public const float SlowSpeedMultiplier = 0.5f;
+    float currentSpeed = MoveSpeed;
 
+    Vector2 moveDirection;
     public Vector2 LastNonzeroDirection { get; private set; }
     bool lastNonzeroDirectionX;
 
@@ -52,7 +54,16 @@ public class PlayerController : MonoBehaviour
             UpdateSprite();
         }
 
-        controller.Move(Time.deltaTime * MoveSpeed * moveDirection.normalized);
+        if (Input.GetButtonDown("Slow"))
+        {
+            currentSpeed = MoveSpeed * SlowSpeedMultiplier;
+        }
+        if (Input.GetButtonUp("Slow"))
+        {
+            currentSpeed = MoveSpeed;
+        }
+
+        controller.Move(Time.deltaTime * currentSpeed * moveDirection.normalized);
     }
 
 
