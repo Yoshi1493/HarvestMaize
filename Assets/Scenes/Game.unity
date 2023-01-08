@@ -2823,7 +2823,7 @@ Transform:
   m_GameObject: {fileID: 1513796037}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1057577230}
@@ -2843,6 +2843,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7d50dbc671afb54990f2074b7e475e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectDifficulty: {fileID: 11400000, guid: 28b3080f8c40d9d42b5af1750cb25520, type: 2}
+  mazeDimensionObjects:
+  - {fileID: 11400000, guid: a268ac148b9c39c45b7c8ace40ac0a21, type: 2}
+  - {fileID: 11400000, guid: 3f353b393628a004a842e5189fd5833f, type: 2}
+  - {fileID: 11400000, guid: c41f94bc098738a49ba33160c67b026e, type: 2}
 --- !u!1 &1561300969
 GameObject:
   m_ObjectHideFlags: 0
