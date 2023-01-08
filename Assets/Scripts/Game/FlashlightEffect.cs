@@ -10,30 +10,60 @@ public class FlashlightEffect : MonoBehaviour
     Vignette vignette;
     const float VignetteIntensity = 0.5f;
 
+    IEnumerator fadeCoroutine;
+
     void Awake()
     {
         FindObjectOfType<MazeGenerator>().GameStartAction += () => enabled = true;
+        FindObjectOfType<PlayerController>().GameOverAction += OnGameOver;
+
+        volumeProfile.TryGet(out vignette);
+        vignette.intensity.value = 0f;
     }
 
-    IEnumerator Start()
+    void Start()
     {
-        if (volumeProfile.TryGet(out vignette))
+        Fade(0f, VignetteIntensity);
+    }
+
+    void Fade(float startValue, float endValue)
+    {
+        if (fadeCoroutine != null)
+        {
+            StopCoroutine(fadeCoroutine);
+        }
+
+        fadeCoroutine = FadeVignette(startValue, endValue);
+        StartCoroutine(fadeCoroutine);
+    }
+
+    IEnumerator FadeVignette(float startValue, float endValue)
+    {
+        if (vignette != null)
         {
             float currentLerpTime = 0f;
             float totalLerpTime = 1f;
 
-            vignette.intensity.value = 0f;
+            vignette.intensity.value = startValue;
 
-            while (vignette.intensity.value < VignetteIntensity)
+            while (vignette.intensity.value != endValue)
             {
                 float lerpProgress = currentLerpTime / totalLerpTime;
-                vignette.intensity.value = Mathf.Lerp(0f, VignetteIntensity, lerpProgress);
+                vignette.intensity.value = Mathf.Lerp(startValue, endValue, lerpProgress);
 
                 yield return EndOfFrame;
                 currentLerpTime += Time.deltaTime;
             }
 
-            vignette.intensity.value = VignetteIntensity;
+            vignette.intensity.value = endValue;
+        }
+    }
+
+    void OnGameOver(bool playerWon)
+    {
+        if (playerWon)
+        {
+            Fade(VignetteIntensity, 0.1f);
         }
     }
 
