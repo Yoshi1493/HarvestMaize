@@ -20,6 +20,11 @@ public class MazeGenerator : MonoBehaviour
     public int RowCount { get => MazeData.GetLength(0); }
     public int ColCount { get => MazeData.GetLength(1); }
 
+    void Awake()
+    {
+        FindObjectOfType<PlayerHarvester>().ThresholdReachedAction += CreateExit;
+    }
+
     IEnumerator Start()
     {
         yield return GenerateNewMaze(mazeDimensions.x, mazeDimensions.y);
@@ -105,22 +110,30 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
-        // create exit
+        return maze;
+    }
+
+    void CreateExit()
+    {
+        int maxR = RowCount - 1;
+        int maxC = ColCount - 1;
+
+        int r, c;
+
         // exit will always be at cardinal direction regardless of inner wall structure
         if (Random.value > 0.5f)
         {
-            int r = Random.value > 0.5f ? 0 : maxR;
-            int c = maxC / 2;
-            maze[r, c] = 0;
+            r = Random.value > 0.5f ? 0 : maxR;
+            c = maxC / 2;            
         }
         else
         {
-            int r = maxR / 2;
-            int c = Random.value > 0.5f ? 0 : maxC;
-            maze[r, c] = 0;
+            r = maxR / 2;
+            c = Random.value > 0.5f ? 0 : maxC;
         }
 
-        return maze;
+        MazeData[r, c] = 0;
+        WallObjects[r, c].SetActive(false);
     }
 }
 
