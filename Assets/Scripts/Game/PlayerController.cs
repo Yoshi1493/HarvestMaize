@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         controller = GetComponent<CharacterController2D>();
+        controller.OnTriggerEnterAction += OnTriggerEnterEvent;
+        controller.OnTriggerExitAction += OnTriggerExitEvent;
+
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         FindObjectOfType<MazeGenerator>().GameStartAction += () => enabled = true;
@@ -66,5 +69,21 @@ public class PlayerController : MonoBehaviour
     {
         GameOverAction?.Invoke(playerWon);
         enabled = false;
+    }
+
+    void OnTriggerEnterEvent(Collider2D other)
+    {
+        if (other.TryGetComponent(out Zombie zombie))
+        {
+            OnGameOver(false);
+        }
+    }
+
+    void OnTriggerExitEvent(Collider2D other)
+    {
+        if (other.TryGetComponent(out Goal goal))
+        {
+            OnGameOver(true);
+        }
     }
 }

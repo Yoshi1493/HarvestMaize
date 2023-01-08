@@ -10,7 +10,6 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] Transform wallParent;
     [SerializeField] GameObject outerWallPrefab;
     [SerializeField] GameObject innerWallPrefab;
-    [SerializeField] GameObject bottomWallPrefab;
 
     [Space]
 
@@ -18,11 +17,11 @@ public class MazeGenerator : MonoBehaviour
 
     public event System.Action GameStartAction;
 
-    int[,] mazeData;
+    public int[,] MazeData { get; private set; }
 
     void Awake()
     {
-        mazeData = new int[,]
+        MazeData = new int[,]
         {
             {1, 1, 1},
             {1, 0, 1},
@@ -42,7 +41,7 @@ public class MazeGenerator : MonoBehaviour
         rowCount = Mathf.Max(rowCount, minSize);
         colCount = Mathf.Max(colCount, minSize);
 
-        mazeData = FromDimensions(rowCount, colCount);
+        MazeData = FromDimensions(rowCount, colCount);
 
         // construct maze
         for (int r = 0; r < rowCount; r++)
@@ -53,27 +52,21 @@ public class MazeGenerator : MonoBehaviour
 
                 float x = c - ((colCount - 1) / 2f);
                 float y = r - ((rowCount - 1) / 2f);
+                float z = (rowCount - r) * -0.1f;
 
-                if (mazeData[r, c] != 0)
+                if (MazeData[r, c] != 0)
                 {
-
-                    if (mazeData[r, c] == 1)
+                    if (MazeData[r, c] == 1)
                     {
                         newWall = Instantiate(innerWallPrefab, wallParent);
                     }
-                    if (mazeData[r, c] == 2)
+                    if (MazeData[r, c] == 2)
                     {
                         newWall = Instantiate(outerWallPrefab, wallParent);
                     }
 
-                    newWall.transform.position = new(x, y);
+                    newWall.transform.position = new(x, y, z);
                     yield return EndOfFrame;
-                }
-
-                if (mazeData[r, c] != 0 && (r == 0 || mazeData[Mathf.Max(r - 1, 0), c] == 0))
-                {
-                    newWall = Instantiate(bottomWallPrefab, wallParent);
-                    newWall.transform.position = new(x, y);
                 }
             }
         }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CharacterController2D : MonoBehaviour
@@ -28,6 +29,9 @@ public class CharacterController2D : MonoBehaviour
     [HideInInspector] public new Rigidbody2D rigidbody;
 
     [SerializeField] LayerMask collisionMask;
+
+    public event Action<Collider2D> OnTriggerEnterAction;
+    public event Action<Collider2D> OnTriggerExitAction;
 
     RaycastOrigins raycastOrigins;
     RaycastHit2D raycastHit;
@@ -187,8 +191,18 @@ public class CharacterController2D : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        OnTriggerEnterAction?.Invoke(other);
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        OnTriggerExitAction?.Invoke(other);
+    }
+
     #region DEBUG
-    
+
     void DrawRay(Vector3 origin, Vector3 direction, float distance)
     {
         Debug.DrawRay(origin, distance * direction, Color.magenta);
