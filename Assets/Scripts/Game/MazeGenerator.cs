@@ -32,7 +32,6 @@ public class MazeGenerator : MonoBehaviour
     IEnumerator Start()
     {
         yield return GenerateNewMaze(mazeDimensions.x, mazeDimensions.y);
-
         GameStartAction?.Invoke();
     }
 
@@ -50,8 +49,7 @@ public class MazeGenerator : MonoBehaviour
             {
                 GameObject newWall = null;
 
-                float x = c - ((colCount - 1) / 2f);
-                float y = r - ((rowCount - 1) / 2f);
+                (float x, float y) = MazeIndexToWorldSpace(rowCount, colCount, r, c);
                 float z = (rowCount - r) * -0.1f;
 
                 if (MazeData[r, c] != 0)
@@ -71,8 +69,20 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
+        yield return EndOfFrame;
+
         // adjust goal trigger based on maze dimensions
         goalTrigger.size = new(colCount + 1, rowCount + 1);
+    }
+
+    // convert maze index to world space based on row and column count
+    // maze index [0, 0] = bottom left
+    public (float, float) MazeIndexToWorldSpace(int rowCount, int colCount, int row, int col)
+    {
+        float x = col - ((colCount - 1) / 2f);
+        float y = row - ((rowCount - 1) / 2f);
+
+        return (x, y);
     }
 
     int[,] FromDimensions(int rowCount, int colCount)
