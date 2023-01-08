@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
+using static MazeGeneratorHelper;
 
 public class PlayerHarvester : MonoBehaviour
 {
     PlayerController player;
+    MazeGenerator mazeGenerator;
 
     public event Action HarvestAction;
 
@@ -14,7 +16,9 @@ public class PlayerHarvester : MonoBehaviour
     void Awake()
     {
         player = GetComponent<PlayerController>();
-        FindObjectOfType<MazeGenerator>().GameStartAction += () => enabled = true;
+
+        mazeGenerator = FindObjectOfType<MazeGenerator>();
+        mazeGenerator.GameStartAction += () => enabled = true;
     }
 
     void Update()
@@ -38,6 +42,10 @@ public class PlayerHarvester : MonoBehaviour
             {
                 if (raycastHit.transform.TryGetComponent(out Wall wall))
                 {
+                    (int row, int col) = WorldSpaceToMazeIndex(mazeGenerator.RowCount, mazeGenerator.ColCount, wall.transform.position);
+                    mazeGenerator.MazeData[row, col] = 0;
+                    mazeGenerator.WallObjects[row, col] = null;
+
                     wall.Harvest();
                     HarvestAction?.Invoke();
                 }

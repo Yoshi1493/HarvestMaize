@@ -15,16 +15,10 @@ public class MazeGenerator : MonoBehaviour
     public event System.Action GameStartAction;
 
     public int[,] MazeData { get; private set; }
+    public GameObject[,] WallObjects { get; private set; }
 
-    void Awake()
-    {
-        MazeData = new int[,]
-        {
-            {1, 1, 1},
-            {1, 0, 1},
-            {1, 1, 1}
-        };
-    }
+    public int RowCount { get => MazeData.GetLength(0); }
+    public int ColCount { get => MazeData.GetLength(1); }
 
     IEnumerator Start()
     {
@@ -38,6 +32,7 @@ public class MazeGenerator : MonoBehaviour
         colCount = Mathf.Max(colCount, minSize);
 
         MazeData = FromDimensions(rowCount, colCount);
+        WallObjects = new GameObject[rowCount, colCount];
 
         // construct maze
         for (int r = 0; r < rowCount; r++)
@@ -61,6 +56,8 @@ public class MazeGenerator : MonoBehaviour
                     }
 
                     newWall.transform.position = pos;
+                    WallObjects[r, c] = newWall;
+
                     yield return EndOfFrame;
                 }
             }
