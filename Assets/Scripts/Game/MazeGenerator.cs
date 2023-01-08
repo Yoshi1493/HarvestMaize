@@ -3,10 +3,17 @@ using UnityEngine;
 using static CoroutineHelper;
 using static MazeGeneratorHelper;
 
+public enum MazeSize
+{ 
+    Small,
+    Medium,
+    Large
+}
+
 public class MazeGenerator : MonoBehaviour
 {
-    [SerializeField] Vector2Int mazeDimensions;
-    const int minSize = 5;
+    [SerializeField] IntObject selectDifficulty;
+    [SerializeField] Vector2IntObject[] mazeDimensionObjects;
 
     [SerializeField] Transform wallParent;
     [SerializeField] GameObject outerWallPrefab;
@@ -27,15 +34,14 @@ public class MazeGenerator : MonoBehaviour
 
     IEnumerator Start()
     {
-        yield return GenerateNewMaze(mazeDimensions.x, mazeDimensions.y);
+        Vector2Int selectedMazeDimension = mazeDimensionObjects[selectDifficulty.value].value;
+        yield return GenerateNewMaze(selectedMazeDimension.x, selectedMazeDimension.y);
+
         GameStartAction?.Invoke();
     }
 
     IEnumerator GenerateNewMaze(int rowCount, int colCount)
     {
-        rowCount = Mathf.Max(rowCount, minSize);
-        colCount = Mathf.Max(colCount, minSize);
-
         MazeData = FromDimensions(rowCount, colCount);
         WallObjects = new GameObject[rowCount, colCount];
 
