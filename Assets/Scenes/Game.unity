@@ -3214,12 +3214,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 474226524079819721, guid: 4fee22663fc734e45b2017ed9500c3a9, type: 3}
       propertyPath: soundEffects.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 474226524079819721, guid: 4fee22663fc734e45b2017ed9500c3a9, type: 3}
       propertyPath: soundEffects.Array.data[1].clip
       value: 
       objectReference: {fileID: 8300000, guid: f9a17b2a0b3297e4894f97658d83d7f2, type: 3}
+    - target: {fileID: 474226524079819721, guid: 4fee22663fc734e45b2017ed9500c3a9, type: 3}
+      propertyPath: soundEffects.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8b62344663cf3194c96cca1e4d20548e, type: 3}
+    - target: {fileID: 474226524079819721, guid: 4fee22663fc734e45b2017ed9500c3a9, type: 3}
+      propertyPath: soundEffects.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: c45debb09d775e441b10640e298a971a, type: 3}
     - target: {fileID: 474226524079819723, guid: 4fee22663fc734e45b2017ed9500c3a9, type: 3}
       propertyPath: m_Name
       value: Audio manager

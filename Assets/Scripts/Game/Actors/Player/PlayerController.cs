@@ -70,6 +70,7 @@ public class PlayerController : Actor
         if (other.TryGetComponent(out Goal goal))
         {
             OnGameOver(true);
+            AudioManager.Instance.PlaySound("game_win");
         }
     }
 }

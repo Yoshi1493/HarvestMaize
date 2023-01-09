@@ -70,6 +70,7 @@ public class PlayerHarvester : MonoBehaviour
         if (harvestCounter.value == MazeGenerator.ContaminatedWallCount)
         {
             AllHarvestedAction?.Invoke();
+            AudioManager.Instance.PlaySound("game_exit-open");
         }
     }
 
