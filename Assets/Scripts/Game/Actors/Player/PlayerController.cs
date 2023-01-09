@@ -19,7 +19,6 @@ public class PlayerController : Actor
         controller.OnTriggerExitAction += OnTriggerExitEvent;
 
         mazeGenerator.GameStartAction += () => enabled = true;
-        FindObjectOfType<PauseHandler>().GamePauseAction += OnGamePaused;
     }
 
     protected override void Move()
@@ -50,11 +49,6 @@ public class PlayerController : Actor
     void UpdateSprite()
     {
         spriteRenderer.flipX = lastNonzeroDirectionX;
-    }
-
-    void OnGamePaused(bool state)
-    {
-        enabled = !state;
     }
 
     public void OnGameOver(bool playerWon)

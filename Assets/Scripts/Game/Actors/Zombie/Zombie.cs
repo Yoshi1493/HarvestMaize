@@ -25,6 +25,7 @@ public class Zombie : Actor
     protected override void Awake()
     {
         base.Awake();
+
         FindObjectOfType<PlayerController>().GameOverAction += OnGameOver;
     }
 

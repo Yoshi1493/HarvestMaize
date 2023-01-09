@@ -18,6 +18,7 @@ public abstract class Actor : MonoBehaviour
         aux = GetComponentInChildren<AudioSource>();
 
         mazeGenerator = FindObjectOfType<MazeGenerator>();
+        FindObjectOfType<PauseHandler>().GamePauseAction += OnGamePaused;
     }
 
     void Update()
@@ -34,4 +35,9 @@ public abstract class Actor : MonoBehaviour
     }
 
     protected abstract void Move();
+
+    void OnGamePaused(bool state)
+    {
+        enabled = !state;
+    }
 }
