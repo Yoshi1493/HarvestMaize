@@ -23,6 +23,11 @@ public class PlayerHarvester : MonoBehaviour
         mazeGenerator = FindObjectOfType<MazeGenerator>();
         mazeGenerator.GameStartAction += () => enabled = true;
 
+        ResetHarvestCounter();        
+    }
+
+    void ResetHarvestCounter()
+    {
         harvestCounter.value = 0;
     }
 
@@ -65,5 +70,10 @@ public class PlayerHarvester : MonoBehaviour
         {
             AllHarvestedAction?.Invoke();
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        ResetHarvestCounter();
     }
 }
