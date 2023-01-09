@@ -1,10 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using static CoroutineHelper;
 using static MazeGeneratorHelper;
 
 public enum MazeSize
-{ 
+{
     Small,
     Medium,
     Large
@@ -16,20 +17,21 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] Vector2IntObject[] mazeDimensionObjects;
 
     [SerializeField] Transform wallParent;
-    [SerializeField] GameObject outerWallPrefab;
-    [SerializeField] GameObject innerWallPrefab;
+    [SerializeField] GameObject[] wallPrefabs;
 
     public event System.Action GameStartAction;
 
     public int[,] MazeData { get; private set; }
-    public GameObject[,] WallObjects { get; private set; }
+    GameObject[,] WallObjects;
 
     public int RowCount { get => MazeData.GetLength(0); }
     public int ColCount { get => MazeData.GetLength(1); }
 
+    public const int ContaminatedWallCount = 10;
+
     void Awake()
     {
-        FindObjectOfType<PlayerHarvester>().ThresholdReachedAction += CreateExit;
+        FindObjectOfType<PlayerHarvester>().AllHarvestedAction += CreateExit;
     }
 
     IEnumerator Start()
@@ -50,21 +52,12 @@ public class MazeGenerator : MonoBehaviour
         {
             for (int c = 0; c < colCount; c++)
             {
-                GameObject newWall = null;
-
                 Vector3 pos = MazeIndexToWorldSpace(rowCount, colCount, r, c);
                 pos.z = (rowCount - r) * -0.1f;
 
                 if (MazeData[r, c] != 0)
                 {
-                    if (MazeData[r, c] == 1)
-                    {
-                        newWall = Instantiate(innerWallPrefab, wallParent);
-                    }
-                    if (MazeData[r, c] == 2)
-                    {
-                        newWall = Instantiate(outerWallPrefab, wallParent);
-                    }
+                    GameObject newWall = Instantiate(wallPrefabs[MazeData[r, c]], wallParent);
 
                     newWall.transform.position = pos;
                     WallObjects[r, c] = newWall;
@@ -116,6 +109,29 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
+        List<(int, int)> innerWallCoordinates = new();
+
+        for (int r = 1; r < maxR; r++)
+        {
+            for (int c = 1; c < maxC; c++)
+            {
+                if (maze[r, c] == 1)
+                {
+                    innerWallCoordinates.Add((r, c));
+                }
+            }
+        }
+
+        // contaminate random walls
+        for (int i = 0; i < ContaminatedWallCount; i++)
+        {
+            int rand = Random.Range(0, innerWallCoordinates.Count);
+            (int r, int c) = innerWallCoordinates[rand];
+
+            maze[r, c] = 3;
+            innerWallCoordinates.Remove((r, c));
+        }
+
         return maze;
     }
 
@@ -130,7 +146,7 @@ public class MazeGenerator : MonoBehaviour
         if (Random.value > 0.5f)
         {
             r = Random.value > 0.5f ? 0 : maxR;
-            c = maxC / 2;            
+            c = maxC / 2;
         }
         else
         {
@@ -138,8 +154,13 @@ public class MazeGenerator : MonoBehaviour
             c = Random.value > 0.5f ? 0 : maxC;
         }
 
-        MazeData[r, c] = 0;
-        WallObjects[r, c].SetActive(false);
+        DestroyWall(r, c);
+    }
+
+    public void DestroyWall(int row, int col)
+    {
+        MazeData[row, col] = 0;
+        WallObjects[row, col].SetActive(false);
     }
 }
 

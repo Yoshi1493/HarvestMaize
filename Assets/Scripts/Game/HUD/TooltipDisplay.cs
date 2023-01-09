@@ -5,66 +5,65 @@ using static CoroutineHelper;
 
 public class TooltipDisplay : MonoBehaviour
 {
-    TextMeshProUGUI tooltipText;
+    [SerializeField] TextMeshProUGUI instructionsText;
+    [SerializeField] TextMeshProUGUI tooltipText;
 
     IEnumerator fadeCoroutine;
     [SerializeField] AnimationCurve fadeInterpolation;
 
     void Awake()
     {
-        tooltipText = GetComponent<TextMeshProUGUI>();
         FindObjectOfType<MazeGenerator>().GameStartAction += () => enabled = true;
-        FindObjectOfType<PlayerHarvester>().ThresholdReachedAction += OnExitCreated;
+        FindObjectOfType<PlayerHarvester>().AllHarvestedAction += OnExitCreated;
 
-        Fade(0f, 1f, 0.5f);
+        instructionsText.text = $"{MazeGenerator.ContaminatedWallCount} crops have been contaminated by zombies.\nHarvest them in order to exit the maze.";
+
+        Fade(instructionsText, 0f, 1f, 0.5f);
+        Fade(tooltipText, 0f, 1f, 0.5f);
     }
 
     void Start()
     {
-        Fade(1f, 0f, 0.5f, 0.5f);
+        Fade(instructionsText, 1f, 0f, 0.5f, 0.5f);
+        Fade(tooltipText, 1f, 0f, 0.5f, 0.5f);
     }
 
-    void Fade(float startValue, float endValue, float fadeDuration, float delay = 0f)
+    void Fade(TextMeshProUGUI text, float startValue, float endValue, float fadeDuration, float delay = 0f)
     {
         if (fadeDuration > 0f)
         {
-            if (fadeCoroutine != null)
-            {
-                StopCoroutine(fadeCoroutine);
-            }
-
-            fadeCoroutine = FadeText(startValue, endValue, fadeDuration, delay);
+            fadeCoroutine = FadeText(text, startValue, endValue, fadeDuration, delay);
             StartCoroutine(fadeCoroutine);
         }
         else
         {
-            tooltipText.alpha = endValue;
+            text.alpha = endValue;
         }
     }
 
-    IEnumerator FadeText(float startValue, float endValue, float fadeDuration, float delay)
+    IEnumerator FadeText(TextMeshProUGUI text, float startValue, float endValue, float fadeDuration, float delay)
     {
-        tooltipText.alpha = startValue;
+        text.alpha = startValue;
 
         if (delay > 0f) yield return WaitForSeconds(delay);
 
         float currentLerpTime = 0f;
 
-        while (tooltipText.alpha != endValue)
+        while (text.alpha != endValue)
         {
             float lerpProgress = fadeInterpolation.Evaluate(currentLerpTime / fadeDuration);
-            tooltipText.alpha = Mathf.Lerp(startValue, endValue, lerpProgress);
+            text.alpha = Mathf.Lerp(startValue, endValue, lerpProgress);
 
             yield return EndOfFrame;
             currentLerpTime += Time.deltaTime;
         }
 
-        tooltipText.alpha = endValue;
+        text.alpha = endValue;
     }
 
     void OnExitCreated()
     {
-        tooltipText.text = "An exit has opened.";
-        Fade(1f, 0f, 1f, 3f);
+        tooltipText.text = "An exit has been opened.";
+        Fade(tooltipText, 1f, 0f, 1f, 3f);
     }
 }

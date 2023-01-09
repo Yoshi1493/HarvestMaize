@@ -10,13 +10,11 @@ public class PlayerHarvester : MonoBehaviour
     [SerializeField] IntObject harvestCounter;
 
     public event Action HarvestAction;
-    public event Action ThresholdReachedAction;
+    public event Action AllHarvestedAction;
 
     [SerializeField] LayerMask collisionMask;
     RaycastHit2D raycastHit;
     const float rayDistance = 0.35f;
-
-    const int HarvestThreshold = 10;
 
     void Awake()
     {
@@ -47,14 +45,11 @@ public class PlayerHarvester : MonoBehaviour
 
             if (raycastHit)
             {
-                print($"hit {raycastHit.transform.name}");
-                if (raycastHit.transform.TryGetComponent(out Wall wall))
+                if (raycastHit.transform.TryGetComponent(out ContaminatedCrop wall))
                 {
                     (int row, int col) = WorldSpaceToMazeIndex(mazeGenerator.RowCount, mazeGenerator.ColCount, wall.transform.position);
-                    mazeGenerator.MazeData[row, col] = 0;
-                    mazeGenerator.WallObjects[row, col] = null;
+                    mazeGenerator.DestroyWall(row, col);
 
-                    wall.Harvest();
                     OnHarvest();
                 }
             }
@@ -66,9 +61,9 @@ public class PlayerHarvester : MonoBehaviour
         harvestCounter.value++;
         HarvestAction?.Invoke();
 
-        if (harvestCounter.value == HarvestThreshold)
+        if (harvestCounter.value == MazeGenerator.ContaminatedWallCount)
         {
-            ThresholdReachedAction?.Invoke();
+            AllHarvestedAction?.Invoke();
         }
     }
 }
