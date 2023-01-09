@@ -4,6 +4,6 @@ public class MenuButton : MonoBehaviour
 {
     public void OnPointerClick(AudioClip clip)
     {
-        AudioManager.Instance.PlaySound(clip);
+        AudioManager.Instance.PlaySound(clip.name);
     }
 }
