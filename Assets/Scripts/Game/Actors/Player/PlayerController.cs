@@ -6,9 +6,6 @@ public class PlayerController : Actor
     CharacterController2D controller;
      
     public const float MoveSpeed = 5f;
-    public const float SlowSpeedMultiplier = 0.5f;
-    float currentSpeed = MoveSpeed;
-
     bool lastNonzeroDirectionX;
 
     public event Action<bool> GameOverAction;
@@ -46,16 +43,7 @@ public class PlayerController : Actor
             UpdateSprite();
         }
 
-        if (Input.GetButtonDown("Slow"))
-        {
-            currentSpeed = MoveSpeed * SlowSpeedMultiplier;
-        }
-        if (Input.GetButtonUp("Slow"))
-        {
-            currentSpeed = MoveSpeed;
-        }
-
-        controller.Move(Time.deltaTime * currentSpeed * moveDirection.normalized);
+        controller.Move(Time.deltaTime * MoveSpeed * moveDirection.normalized);
     }
 
 
