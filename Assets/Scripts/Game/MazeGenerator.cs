@@ -23,6 +23,7 @@ public class MazeGenerator : MonoBehaviour
 
     public int[,] MazeData { get; private set; }
     GameObject[,] WallObjects;
+    List<(int, int)> innerWallCoordinates = new();
 
     public int RowCount { get => MazeData.GetLength(0); }
     public int ColCount { get => MazeData.GetLength(1); }
@@ -90,12 +91,13 @@ public class MazeGenerator : MonoBehaviour
                 else if (r % 2 == 0 && c % 2 == 0)
                 {
                     maze[r, c] = 1;
+                    innerWallCoordinates.Add((r, c));
 
                     int a = Random.value > 0.5f ? 0 : (Random.value > 0.5f ? -1 : 1);
                     int b = a != 0 ? 0 : (Random.value > 0.5f ? -1 : 1);
 
                     maze[r + a, c + b] = 1;
-
+                    innerWallCoordinates.Add((r + a, c + b));
                 }
             }
         }
@@ -106,19 +108,6 @@ public class MazeGenerator : MonoBehaviour
             for (int c = -1; c <= 1; c++)
             {
                 maze[maxR / 2 + r, maxC / 2 + c] = 0;
-            }
-        }
-
-        List<(int, int)> innerWallCoordinates = new();
-
-        for (int r = 1; r < maxR; r++)
-        {
-            for (int c = 1; c < maxC; c++)
-            {
-                if (maze[r, c] == 1)
-                {
-                    innerWallCoordinates.Add((r, c));
-                }
             }
         }
 
@@ -147,14 +136,20 @@ public class MazeGenerator : MonoBehaviour
         {
             r = Random.value > 0.5f ? 0 : maxR;
             c = maxC / 2;
+
+            DestroyWall(r, c - 1);
+            DestroyWall(r, c);
+            DestroyWall(r, c + 1);
         }
         else
         {
             r = maxR / 2;
             c = Random.value > 0.5f ? 0 : maxC;
-        }
 
-        DestroyWall(r, c);
+            DestroyWall(r - 1, c);
+            DestroyWall(r, c);
+            DestroyWall(r + 1, c);
+        }
     }
 
     public void DestroyWall(int row, int col)

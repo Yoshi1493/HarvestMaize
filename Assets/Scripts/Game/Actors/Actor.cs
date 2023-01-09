@@ -28,7 +28,6 @@ public abstract class Actor : MonoBehaviour
         {
             if (!aux.isPlaying)
             {
-                print($"{name} is playing footestpes.");
                 aux.Play();
             }
         }
