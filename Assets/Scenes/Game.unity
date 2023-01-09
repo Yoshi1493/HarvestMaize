@@ -1656,7 +1656,7 @@ GameObject:
   - component: {fileID: 843048274}
   - component: {fileID: 843048273}
   - component: {fileID: 843048275}
-  m_Layer: 31
+  m_Layer: 0
   m_Name: Global Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
