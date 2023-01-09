@@ -16,7 +16,7 @@ public class TooltipDisplay : MonoBehaviour
         FindObjectOfType<MazeGenerator>().GameStartAction += () => enabled = true;
         FindObjectOfType<PlayerHarvester>().AllHarvestedAction += OnExitCreated;
 
-        instructionsText.text = $"{MazeGenerator.ContaminatedWallCount} crops have been contaminated by zombies.\nHarvest them in order to exit the maze.";
+        instructionsText.text = $"{MazeGenerator.ContaminatedWallCount} crops have been contaminated by zombies.\n\nHarvest them in order to exit the maze,\nbefore the zombies harvest you.";
 
         Fade(instructionsText, 0f, 1f, 0.5f);
         Fade(tooltipText, 0f, 1f, 0.5f);
