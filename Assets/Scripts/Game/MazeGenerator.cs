@@ -91,13 +91,11 @@ public class MazeGenerator : MonoBehaviour
                 else if (r % 2 == 0 && c % 2 == 0)
                 {
                     maze[r, c] = 1;
-                    innerWallCoordinates.Add((r, c));
 
                     int a = Random.value > 0.5f ? 0 : (Random.value > 0.5f ? -1 : 1);
                     int b = a != 0 ? 0 : (Random.value > 0.5f ? -1 : 1);
 
                     maze[r + a, c + b] = 1;
-                    innerWallCoordinates.Add((r + a, c + b));
                 }
             }
         }
