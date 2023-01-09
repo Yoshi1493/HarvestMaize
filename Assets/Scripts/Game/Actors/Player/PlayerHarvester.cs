@@ -65,6 +65,7 @@ public class PlayerHarvester : MonoBehaviour
     {
         harvestCounter.value++;
         HarvestAction?.Invoke();
+        AudioManager.Instance.PlaySound("player_harvest", true);
 
         if (harvestCounter.value == MazeGenerator.ContaminatedWallCount)
         {
