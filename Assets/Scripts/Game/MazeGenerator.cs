@@ -109,6 +109,17 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
+        for (int r = 1; r < maxR; r++)
+        {
+            for (int c = 1; c < maxC; c++)
+            {
+                if (maze[r, c] == 1)
+                {
+                    innerWallCoordinates.Add((r, c));
+                }
+            }
+        }
+
         // contaminate random walls
         for (int i = 0; i < ContaminatedWallCount; i++)
         {
