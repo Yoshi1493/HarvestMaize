@@ -3,23 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using static CoroutineHelper;
 
-public class Zombie : MonoBehaviour
+public class Zombie : Actor
 {
-    new Transform transform;
-    SpriteRenderer spriteRenderer;
-
-    MazeGenerator mazeGenerator;
-    (int maxRow, int maxCol) mazeBounds;
     public (int row, int col) currentCoordinate;
 
     IEnumerator moveCoroutine;
-    Vector2Int moveDirection;
-    Vector2Int lastNonzeroDirection;
     const float MoveSpeed = 2f;
 
     const int MoveDirectionCount = 4;
 
-    readonly List<Vector2Int> moveDirections = new(MoveDirectionCount)
+    readonly List<Vector2> moveDirections = new(MoveDirectionCount)
     {
         new(0, 1),
         new(1, 0),
@@ -27,25 +20,20 @@ public class Zombie : MonoBehaviour
         new(-1, 0)
     };
 
-    List<Vector2Int> possibleMoveDirections = new(MoveDirectionCount);
+    List<Vector2> possibleMoveDirections = new(MoveDirectionCount);
 
-    void Awake()
+    protected override void Awake()
     {
-        transform = GetComponent<Transform>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
+        base.Awake();
         FindObjectOfType<PlayerController>().GameOverAction += OnGameOver;
-        mazeGenerator = FindObjectOfType<MazeGenerator>();
-
-        mazeBounds = (mazeGenerator.MazeData.GetUpperBound(0), mazeGenerator.MazeData.GetUpperBound(1));
     }
 
-    void Update()
+    protected override void Move()
     {
         if (moveDirection == Vector2.zero)
         {
             moveDirection = GetNextMoveDirection();
-            lastNonzeroDirection = moveDirection;
+            LastNonzeroDirection = moveDirection;
             UpdateSprite();
         }
         else
@@ -60,18 +48,19 @@ public class Zombie : MonoBehaviour
         }
     }
 
-    Vector2Int GetNextMoveDirection()
+    Vector2 GetNextMoveDirection()
     {
         possibleMoveDirections.Clear();
 
         // get possible move directions
         for (int i = 0; i < MoveDirectionCount; i++)
         {
-            Vector2Int dir = moveDirections[i];
-            (int nextRow, int nextCol) = (currentCoordinate.row + dir.y, currentCoordinate.col + dir.x);
+            Vector2 dir = moveDirections[i];
+            int nextRow = currentCoordinate.row + (int)dir.y;
+            int nextCol = currentCoordinate.col + (int)dir.x;
 
             // make sure not to move out of maze bounds
-            if (nextRow > 0 && nextRow < mazeBounds.maxRow && nextCol > 0 && nextCol < mazeBounds.maxCol)
+            if (nextRow > 0 && nextRow < mazeGenerator.RowCount - 1 && nextCol > 0 && nextCol < mazeGenerator.ColCount - 1)
             {
                 // add to list of possible move directions if space is empty
                 if (mazeGenerator.MazeData[nextRow, nextCol] == 0)
@@ -91,14 +80,14 @@ public class Zombie : MonoBehaviour
             else
             {
                 // don't pick direction that is directly opposite of current moveDirection
-                possibleMoveDirections.Remove(lastNonzeroDirection * -1);
+                possibleMoveDirections.Remove(LastNonzeroDirection * -1);
 
                 int rand = Random.Range(0, possibleMoveDirections.Count);
                 return possibleMoveDirections[rand];
             }
         }
 
-        return Vector2Int.zero;
+        return Vector2.zero;
     }
 
     // lerp position from current position to <endPos>
@@ -118,8 +107,8 @@ public class Zombie : MonoBehaviour
         }
 
         transform.position = endPos;
-        currentCoordinate = (currentCoordinate.row + moveDirection.y, currentCoordinate.col + moveDirection.x);
-        moveDirection = Vector2Int.zero;
+        currentCoordinate = (currentCoordinate.row + (int)moveDirection.y, currentCoordinate.col + (int)moveDirection.x);
+        moveDirection = Vector2.zero;
 
         moveCoroutine = null;
     }

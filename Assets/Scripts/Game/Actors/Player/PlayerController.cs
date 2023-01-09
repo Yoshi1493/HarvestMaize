@@ -1,39 +1,31 @@
 using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Actor
 {
     CharacterController2D controller;
-    SpriteRenderer spriteRenderer;
-
+     
     public const float MoveSpeed = 5f;
     public const float SlowSpeedMultiplier = 0.5f;
     float currentSpeed = MoveSpeed;
 
-    Vector2 moveDirection;
-    public Vector2 LastNonzeroDirection { get; private set; }
     bool lastNonzeroDirectionX;
 
     public event Action<bool> GameOverAction;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         controller = GetComponent<CharacterController2D>();
         controller.OnTriggerEnterAction += OnTriggerEnterEvent;
         controller.OnTriggerExitAction += OnTriggerExitEvent;
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-        FindObjectOfType<MazeGenerator>().GameStartAction += () => enabled = true;
+        mazeGenerator.GameStartAction += () => enabled = true;
         FindObjectOfType<PauseHandler>().GamePauseAction += OnGamePaused;
     }
 
-    void Update()
-    {
-        Move();
-    }
-
-    void Move()
+    protected override void Move()
     {
         moveDirection.x = Input.GetAxisRaw("Horizontal");
         moveDirection.y = Input.GetAxisRaw("Vertical");
