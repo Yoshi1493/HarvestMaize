@@ -1,19 +1,25 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class HUD : MonoBehaviour
 {
     [SerializeField] IntObject harvestCounter;
-    TextMeshProUGUI counterText;
+    [SerializeField] GameObject counterImage;
+    [SerializeField] TextMeshProUGUI counterText;
 
     void Awake()
     {
-        counterText = GetComponent<TextMeshProUGUI>();
         FindObjectOfType<PlayerHarvester>().HarvestAction += OnHarvest;
     }
 
     void OnHarvest()
     {
+        if (!counterImage.activeSelf)
+        {
+            counterImage.SetActive(true);
+        }
+
         counterText.text = harvestCounter.value.ToString();
     }
 }

@@ -799,7 +799,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &316830829
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2570,7 +2570,6 @@ GameObject:
   - component: {fileID: 1327927312}
   - component: {fileID: 1327927311}
   - component: {fileID: 1327927310}
-  - component: {fileID: 1327927313}
   m_Layer: 5
   m_Name: Counter (TMP)
   m_TagString: Untagged
@@ -2596,7 +2595,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 74.1, y: 71.51}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1327927310
 MonoBehaviour:
@@ -2709,19 +2708,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327927308}
   m_CullTransparentMesh: 1
---- !u!114 &1327927313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1327927308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb731d7cd2e69074b973695cbf99f387, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  harvestCounter: {fileID: 11400000, guid: bff536b609fd06b42b4d9701d1157724, type: 2}
 --- !u!223 &1376942779 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 8554802712091106061, guid: 11a0f1830bff11b49b3f3ce0305b8197, type: 3}
@@ -3824,6 +3810,7 @@ GameObject:
   - component: {fileID: 1995850632}
   - component: {fileID: 1995850631}
   - component: {fileID: 1995850630}
+  - component: {fileID: 1995850635}
   - component: {fileID: 1995850634}
   m_Layer: 5
   m_Name: HUD
@@ -3954,6 +3941,21 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1995850635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995850629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb731d7cd2e69074b973695cbf99f387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  harvestCounter: {fileID: 11400000, guid: bff536b609fd06b42b4d9701d1157724, type: 2}
+  counterImage: {fileID: 316830828}
+  counterText: {fileID: 1327927311}
 --- !u!1 &1999343288
 GameObject:
   m_ObjectHideFlags: 0
