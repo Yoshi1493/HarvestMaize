@@ -1,9 +1,17 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class MenuButton : MonoBehaviour
+[RequireComponent (typeof(Button))]
+public class MenuButton : MonoBehaviour, IPointerClickHandler
 {
-    public void OnPointerClick(AudioClip clip)
+    [SerializeField] AudioClip menuButtonClick;
+
+    public void OnPointerClick(PointerEventData eventData)
     {
-        AudioManager.Instance.PlaySound(clip.name);
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            AudioManager.Instance.PlaySound(menuButtonClick);
+        }
     }
 }

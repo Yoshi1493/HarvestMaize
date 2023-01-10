@@ -33,6 +33,17 @@ public class AudioManager : MonoBehaviour
     public void PlaySound(string name, bool allowOverlap = false)
     {
         SoundEffect sound = Array.Find(soundEffects, s => s.name == name);
+        _PlaySound(sound, allowOverlap);
+    }
+
+    public void PlaySound(AudioClip clip, bool allowOverlap = false)
+    {
+        SoundEffect sound = Array.Find(soundEffects, s => s.clip = clip);
+        _PlaySound(sound, allowOverlap);
+    }
+
+    void _PlaySound(SoundEffect sound, bool allowOverlap)
+    {
         if (sound == null) return;
 
         if (!sound.source.isPlaying || allowOverlap)
