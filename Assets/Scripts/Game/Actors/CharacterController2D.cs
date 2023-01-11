@@ -16,12 +16,10 @@ public class CharacterController2D : MonoBehaviour
         public bool left;
         public bool top;
         public bool bottom;
-        public bool becameGroundedThisFrame;
-        public bool wasGroundedLastFrame;
 
         public bool IsColliding => right || left || top || bottom;
 
-        public void ResetCollision() => right = left = top = bottom = becameGroundedThisFrame = false;
+        public void ResetCollision() => right = left = top = bottom = false;
     }
 
     [HideInInspector] public new Transform transform;
@@ -44,7 +42,6 @@ public class CharacterController2D : MonoBehaviour
     const float SkinWidth = 0.01f;
 
     [HideInInspector] public CollisionState collisionState = new();
-    public bool IsGrounded => collisionState.bottom;
 
     public Vector3 Velocity { get; private set; }
 
@@ -68,10 +65,10 @@ public class CharacterController2D : MonoBehaviour
         verticalRayDistance = actualColliderWidth / (VerticalRayCount - 1);
     }
 
-    public void Move(Vector3 deltaMovement)
+    public bool Move(Vector3 deltaMovement)
     {
-        // save current grounded state
-        collisionState.wasGroundedLastFrame = collisionState.bottom;
+        Vector3 previousPos = transform.position;
+        Vector3 currentPos = transform.position;
 
         // reset state
         collisionState.ResetCollision();
@@ -100,13 +97,10 @@ public class CharacterController2D : MonoBehaviour
         if (Time.deltaTime > 0f)
         {
             Velocity = deltaMovement / Time.deltaTime;
+            currentPos = transform.position;
         }
 
-        // set becameGrounded state based on previous and current collision state
-        if (!collisionState.wasGroundedLastFrame && IsGrounded)
-        {
-            collisionState.becameGroundedThisFrame = true;
-        }
+        return previousPos != currentPos;
     }
 
     // reposition raycast origins to the current bounds of the collider, inset by the skin width constant

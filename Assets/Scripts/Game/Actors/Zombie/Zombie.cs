@@ -49,6 +49,17 @@ public class Zombie : Actor
         }
     }
 
+    protected override void PlayAudio()
+    {
+        if (moveDirection != Vector2.zero)
+        {
+            if (!aux.isPlaying)
+            {
+                aux.Play();
+            }
+        }
+    }
+
     Vector2 GetNextMoveDirection()
     {
         possibleMoveDirections.Clear();

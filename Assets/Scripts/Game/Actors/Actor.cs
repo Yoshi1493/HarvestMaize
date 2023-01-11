@@ -24,17 +24,11 @@ public abstract class Actor : MonoBehaviour
     void Update()
     {
         Move();
-
-        if (!moveDirection.Equals(Vector2.zero))
-        {
-            if (!aux.isPlaying)
-            {
-                aux.Play();
-            }
-        }
+        PlayAudio();
     }
 
     protected abstract void Move();
+    protected abstract void PlayAudio();
 
     void OnGamePaused(bool state)
     {

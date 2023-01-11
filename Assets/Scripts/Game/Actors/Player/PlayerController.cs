@@ -4,9 +4,10 @@ using UnityEngine;
 public class PlayerController : Actor
 {
     CharacterController2D controller;
-     
+
     public const float MoveSpeed = 5f;
     bool lastNonzeroDirectionX;
+    bool hasMovedSinceLastFrame;
 
     public event Action<bool> GameOverAction;
 
@@ -42,9 +43,19 @@ public class PlayerController : Actor
             UpdateSprite();
         }
 
-        controller.Move(Time.deltaTime * MoveSpeed * moveDirection.normalized);
+        hasMovedSinceLastFrame = controller.Move(Time.deltaTime * MoveSpeed * moveDirection.normalized);
     }
 
+    protected override void PlayAudio()
+    {
+        if (hasMovedSinceLastFrame)
+        {
+            if (!aux.isPlaying)
+            {
+                aux.Play();
+            }
+        }
+    }
 
     void UpdateSprite()
     {
