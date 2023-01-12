@@ -4,6 +4,8 @@ using static CoroutineHelper;
 
 public class PlayerSlashEffect : MonoBehaviour
 {
+    PlayerController player;
+    
     SpriteRenderer spriteRenderer;
     Material slashMaterial;
 
@@ -12,6 +14,8 @@ public class PlayerSlashEffect : MonoBehaviour
 
     void Awake()
     {
+        player = GetComponentInParent<PlayerController>();
+
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         spriteRenderer.enabled = false;
 
@@ -20,6 +24,14 @@ public class PlayerSlashEffect : MonoBehaviour
         animationSpeed = slashMaterial.GetFloat("_AnimationSpeed");
 
         GetComponentInParent<PlayerHarvester>().HarvestAction += OnPlayerHarvest;
+    }
+
+    void Update()
+    {
+        Vector2 dir = player.LastNonzeroDirection;
+        float zRotation = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        transform.eulerAngles = zRotation * Vector3.forward;
     }
 
     void OnPlayerHarvest()
@@ -51,6 +63,5 @@ public class PlayerSlashEffect : MonoBehaviour
         }
 
         spriteRenderer.enabled = false;
-        enabled = false;
     }
 }

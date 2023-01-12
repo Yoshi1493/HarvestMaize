@@ -1757,8 +1757,7 @@ GameObject:
   m_Component:
   - component: {fileID: 941021244}
   - component: {fileID: 941021245}
-  - component: {fileID: 941021246}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Slash effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1832,18 +1831,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &941021246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 941021243}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79b3a8d6a5ba5a4a887cc54522cae41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &973422153
 GameObject:
   m_ObjectHideFlags: 0
@@ -3408,6 +3395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1663244070}
+  - component: {fileID: 1663244071}
   m_Layer: 6
   m_Name: Slash effect parent
   m_TagString: Untagged
@@ -3431,6 +3419,18 @@ Transform:
   m_Father: {fileID: 193804858}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1663244071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663244069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79b3a8d6a5ba5a4a887cc54522cae41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1710962959
 PrefabInstance:
   m_ObjectHideFlags: 0
