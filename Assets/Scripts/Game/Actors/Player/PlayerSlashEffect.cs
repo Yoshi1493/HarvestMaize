@@ -19,10 +19,10 @@ public class PlayerSlashEffect : MonoBehaviour
         slashMaterial.SetFloat("_AnimationTime", 0f);
         animationSpeed = slashMaterial.GetFloat("_AnimationSpeed");
 
-        GetComponentInParent<PlayerHarvester>().HarvestAction += () => enabled = true;
+        GetComponentInParent<PlayerHarvester>().HarvestAction += OnPlayerHarvest;
     }
 
-    void OnEnable()
+    void OnPlayerHarvest()
     {
         if (slashAnimationCoroutine != null)
         {
