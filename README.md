@@ -6,7 +6,7 @@ Harvest Maize is a survival-based game. The player plays as a farmer, who is tra
 
 ## Links + credits
 [Ludum Dare page](https://ldjam.com/events/ludum-dare/52/harvest-maize)  
-Code - me
+Code - Yoshi1493  
 Graphics & Design - RedcXca | [Github](https://github.com/RedcXca)  
 Sounds - royalty-free
 
